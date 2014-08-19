@@ -1,0 +1,2 @@
+global-include *.tac *.js *.so version
+graft scripts

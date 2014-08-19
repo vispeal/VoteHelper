@@ -1,0 +1,4 @@
+[wechat]
+logs_dir        = %(log_dir_base)s/wechat
+data_dir        = %(data_dir_base)s/wechat
+wechatdb         = %(wechat_db)s/wechat

@@ -1,0 +1,2 @@
+global-include *.tac *.cfg *.xml *.py *.conf
+graft scripts 

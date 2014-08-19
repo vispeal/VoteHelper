@@ -1,0 +1,61 @@
+server {
+        listen 80;
+        server_name dzone.dolphin.com;
+        location / {
+		proxy_set_header X-Real-IP $remote_addr;
+                proxy_pass  http://dzone;
+        }
+	log_format weibonews '$remote_addr - $remote_user [$time_local] '
+                   '$request_method $request_uri "$request_body" '
+                   '$status $bytes_sent '
+                   '"$http_refer" "$http_user_agent"';
+        location ~* /track {
+                root        /var/app/weibonews/enabled/nginx_web/static;
+		access_log  /var/app/weibonews/log/nginx_web/track.log weibonews;
+        }
+
+}
+
+upstream weibonews{
+        server 127.0.0.1:8000;
+        server 127.0.0.1:8001;
+        server 127.0.0.1:8002;
+        server 127.0.0.1:8003;
+}
+
+server{
+        listen 8000;
+        server_name 127.0.0.1;
+        location / {
+                uwsgi_pass  10.112.63.178:80;
+                include uwsgi_params;
+        }
+}
+
+server{
+        listen 8001;
+        server_name 127.0.0.1;
+        location / {
+                uwsgi_pass 10.245.221.111:80;
+                include uwsgi_params;
+        }
+}
+
+server{
+        listen 8002;
+        server_name 127.0.0.1;
+        location / {
+                uwsgi_pass 10.117.83.26:80;
+                include uwsgi_params;
+        }
+}
+server{
+        listen 8003;
+        server_name 127.0.0.1;
+        location / {
+                uwsgi_pass 10.245.221.248:80;
+                include uwsgi_params;
+        }
+}
+
+log_format nginx_web 

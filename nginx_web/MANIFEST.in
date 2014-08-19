@@ -1,0 +1,4 @@
+global-include *.tac *.cfg *.nginx *.conf *.logrotate *.crt *.key
+graft scripts
+graft static
+graft root

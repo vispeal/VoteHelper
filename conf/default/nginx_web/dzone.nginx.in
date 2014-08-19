@@ -1,0 +1,53 @@
+proxy_cache_path %(data_dir_base)s/nginx_web/proxy_cache_dir levels=1:2 keys_zone=%(nginx_cache_zone)s:200m inactive=30m max_size=%(nginx_cache_size)sg;
+
+server {
+	listen %(web_port)s;
+	server_name %(url)s;
+
+
+	keepalive_timeout 30;
+
+	gzip on;
+	gzip_comp_level 6;
+	gzip_min_length 1000;
+	gzip_proxied any;
+	gzip_buffers 16 8k;
+	gzip_types text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript;
+	gzip_disable "msie6";
+
+	log_format dzone_access '$remote_addr - $remote_user [$time_local] '
+		'$request_method $request_uri '
+		'$status $bytes_sent '
+		'$request_time $upstream_response_time $upstream_cache_status '
+		'"$request_body" "$http_cookie" '
+		'"$http_referer" "$http_user_agent"';
+	log_format dzone_track '$remote_addr - $remote_user [$time_local] '
+		'$request_method $request_uri "$request_body" '
+		'$status $bytes_sent '
+		'"$http_referer" "$http_user_agent"';
+
+	access_log %(log_dir_base)s/nginx_web/access.log dzone_access;
+	error_log %(log_dir_base)s/nginx_web/error.log;
+
+
+	location = /robots.txt { deny all;error_log off; access_log off; log_not_found off; }
+	location = /favicon.ico { deny all;error_log off; access_log off; log_not_found off; }
+
+	# Load static resources
+
+
+	location /api/ {
+		proxy_set_header X-Real-IP $remote_addr;
+		proxy_pass http://%(#wechat/ip)s:%(#wechat/http_port)s;
+	}
+
+
+	location /nginx/ {
+		stub_status on;
+		access_log off;
+		allow 123.126.24.14;
+		allow %(#nginx_web/dns)s;
+		allow 127.0.0.1;
+		deny all;
+	}
+}
