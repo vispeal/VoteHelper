@@ -1,0 +1,5 @@
+#set -e
+
+sudo killall -9 phantomjs
+
+casperjs --web-security=no main.js >> robot.log &
