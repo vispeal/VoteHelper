@@ -216,10 +216,10 @@ def voting(group_id, voter, nick, msg):
         }
         if item_number == len(vote_values):
             vote_record['valid'] = True
+            wechatdb.update_vote_task({'id': vote_id}, {'$set': {'last_voter': nick}})
         else:
             vote_record['valid'] = False
         wechatdb.update_vote_record({'vote_id': vote_id, 'voter': voter}, vote_record, upsert=True)
-        wechatdb.update_vote_task({'id': vote_id}, {'$set': {'last_voter': nick}})
     return {'tip': tip}
 
 def vote_finish(group_id, sender, nick, msg, group_users):
