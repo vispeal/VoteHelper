@@ -59,8 +59,18 @@ var MessageHandler = function() {
                 continue;
             }
             var img_node = elems[i].previousSibling.previousSibling;
-            //console.log(img_node);
-            //console.log(img_node.tagName);
+            console.log(img_node);
+            console.log(img_node.tagName);
+            if (img_node == null || img_node.tagName != "IMG"){
+                img_node = elems[i].previousSibling.previousSibling.previousSibling;
+            }
+            console.log(img_node);
+            console.log(img_node.tagName);
+            if (img_node == null || img_node.tagName != "IMG"){
+                img_node = elems[i].previousSibling.previousSibling.previousSibling.previousSibling;
+            }
+            console.log(img_node);
+            console.log(img_node.tagName);
             if (img_node == null || img_node.tagName != "IMG"){
                 console.log("###Error### can not get image node of message!");
                 console.log(elems[i].innerHTML);
